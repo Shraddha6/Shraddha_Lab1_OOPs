@@ -5,38 +5,6 @@ import java.util.*;
 
 public class HotelBooking {
 
-    static Booking bookRoom(BookingRequest bookingRequest, Hotel hotel) {
-        UUID bookingId = UUID.randomUUID();
-        Date date = new Date();
-        Booking booking = null;
-        Set<Room> rooms = hotel.getRooms();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        for (Room room : rooms) {
-            if(room.getRoomStatus() != "Available"){
-                return null;
-            }
-            else {
-                if ((bookingRequest.isAc() == room.isAirConditioner()) &&
-                        room.getRoomType().equals(HotelConstant.RoomType.valueOf(bookingRequest.getRoomType().toUpperCase()))) {
-                    booking = new Booking(bookingId.toString(), true, "3 days",
-                            room, date, date, 3000);
-                    room.setRoomStatus("FULL");
-                    break;
-
-                } else if ((bookingRequest.isAc() == room.isAirConditioner()) &&
-                        room.getRoomType().equals(HotelConstant.RoomType.valueOf(bookingRequest.getRoomType().toUpperCase()))) {
-                    booking = new Booking(bookingId.toString(), true, "2 days",
-                            room, date, date, 2000);
-                    room.setRoomStatus("FULL");
-                    break;
-                }
-            }
-        }
-        hotel.setBooking(booking);
-        System.out.println("Rom has been booked " + booking);
-        return booking;
-    }
-
     static Set<Room> createRooms() {
         Set<Room> availableRooms = new HashSet<>();
         Room singleRoomWithACFloor1 = new Room("101", "first");
@@ -99,7 +67,7 @@ public class HotelBooking {
             bookingRequest.setAc(ifAC.equalsIgnoreCase("yes"));
             bookingRequest.setFloorNumber(floor);
             bookingRequest.setRoomType(roomType);
-            Booking bookedRoom = bookRoom(bookingRequest,hotel);
+            Booking bookedRoom = BookingUtils.bookRoom(bookingRequest,hotel);
             if (null != bookedRoom) {
                 System.out.println("Room number: " + bookedRoom.getRoomDetails().getRoomNumber() + ", "
                         + bookedRoom.getRoomDetails().getFloor() + ", "

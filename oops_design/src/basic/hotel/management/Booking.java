@@ -13,14 +13,14 @@ public class Booking {
     private double BookingCost;
 
     public Booking(String bookingId, boolean isConfirmed, String bookingDuration, Room roomDetails,
-                   Date checkinDateAndTime, Date checkoutDateAndTime, double bookingCost) {
+                   Date checkinDateAndTime, Date checkoutDateAndTime) {
         this.bookingId = bookingId;
         this.isConfirmed = isConfirmed;
         this.bookingDuration = bookingDuration;
         this.roomDetails = roomDetails;
         this.checkinDateAndTime = checkinDateAndTime;
         this.checkoutDateAndTime = checkoutDateAndTime;
-        BookingCost = bookingCost;
+        BookingCost = BookingUtils.getEstimatedCostPerDay(roomDetails);
     }
 
     public String getBookingId() {
